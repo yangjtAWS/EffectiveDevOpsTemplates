@@ -17,7 +17,7 @@ from troposphere import (
 ApplicationName = "helloworld"
 ApplicationPort = "3000"
 
-GithubAccount = "EffectiveDevOpsWithAWS"
+GithubAccount = "yangjtAWS"
 GithubAnsibleURL = "https://github.com/{}/ansible".format(GithubAccount)
 
 AnsiblePullCmd = \
@@ -63,7 +63,7 @@ ud = Base64(Join('\n', [
     "yum install --enablerepo=epel -y git",
     "pip install ansible",
     AnsiblePullCmd,
-    "echo '*/10 * * * * {}' > /etc/cron.d/ansible-pull".format(AnsiblePullCmd)
+    "echo '*/10 * * * * root {}' > /etc/cron.d/ansible-pull".format(AnsiblePullCmd)
 ]))
 
 t.add_resource(ec2.Instance(
