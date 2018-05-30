@@ -33,7 +33,7 @@ from awacs.sts import AssumeRole
 ApplicationName = "jenkins"
 ApplicationPort = "8080"
 
-GithubAccount = "yangjtAWS"
+GithubAccount = "JingPSE"
 GithubAnsibleURL = "https://github.com/{}/ansible".format(GithubAccount)
 
 AnsiblePullCmd = \
@@ -76,10 +76,17 @@ t.add_resource(ec2.SecurityGroup(
 
 ud = Base64(Join('\n', [
     "#!/bin/bash",
+    "sudo yum -y update"
+    "sudo yum -y install java-1.8.0",
+    "sudo yum -y remove java-1.7.0-openjdk",
+    "curl --silent --location https://rpm.nodesource.com/setup_10.x | sudo bash -",
+    "sudo yum -y install nodejs",
+    #"yum install -y gcc-c++ make",
+    #"curl -sL https://rpm.nodesource.com/setup_8.x | sudo -E bash -",
     "yum install --enablerepo=epel -y git",
     "pip install ansible",
     AnsiblePullCmd,
-    "echo '*/10 * * * * root {}' > /etc/cron.d/ansible-pull".format(AnsiblePullCmd)
+    "echo '*/5 * * * * root {}' > /etc/cron.d/ansible-pull".format(AnsiblePullCmd)
 ]))
 
 t.add_resource(Role(
@@ -118,7 +125,7 @@ t.add_resource(InstanceProfile(
 
 t.add_resource(ec2.Instance(
     "instance",
-    ImageId="ami-f63b1193",
+    ImageId="ami-976152f2",
     InstanceType="t2.micro",
     SecurityGroups=[Ref("SecurityGroup")],
     KeyName=Ref("KeyPair"),
