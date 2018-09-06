@@ -30,14 +30,15 @@ from awacs.aws import (
 
 from awacs.sts import AssumeRole
 
+
 ApplicationName = "jenkins"
 ApplicationPort = "8080"
 
 GithubAccount = "JingPSE"
-GithubAnsibleURL = "https://github.com/{}/ansible".format(GithubAccount)
+GithubAnsibleURL = "https://github.com/JingPSE/ansible".format(GithubAccount)
 
 AnsiblePullCmd = \
-    "/usr/local/bin/ansible-pull -U {} {}.yml -i localhost".format(
+    "sudo /usr/local/bin/ansible-pull -U {} {}.yml -i localhost".format(
         GithubAnsibleURL,
         ApplicationName
     )
@@ -46,7 +47,7 @@ PublicCidrIp = str(ip_network(get_ip()))
 
 t = Template()
 
-t.add_description("Effective DevOps in AWS: HelloWorld web application")
+t.add_description("Effective DevOps in AWS: HelloWorld web application - Jing")
 
 t.add_parameter(Parameter(
     "KeyPair",
@@ -81,8 +82,6 @@ ud = Base64(Join('\n', [
     "sudo yum -y remove java-1.7.0-openjdk",
     "curl --silent --location https://rpm.nodesource.com/setup_10.x | sudo bash -",
     "sudo yum -y install nodejs",
-    #"yum install -y gcc-c++ make",
-    #"curl -sL https://rpm.nodesource.com/setup_8.x | sudo -E bash -",
     "yum install --enablerepo=epel -y git",
     "pip install ansible",
     AnsiblePullCmd,
@@ -148,5 +147,4 @@ t.add_output(Output(
     ]),
 ))
 
-#print t.to_json()
 print (t.to_json())
